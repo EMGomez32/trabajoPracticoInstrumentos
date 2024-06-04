@@ -23,3 +23,19 @@ export const getInstrumentos = async (): Promise<Instrumentos[]> => {
     console.log(response);
     return await response.json();
 };
+
+export const buscarInstrumentoXId = async (instrumentoId: string | number): Promise<Instrumentos> => {
+    const endpoint = `http://localhost:8080/Instrumentos/buscar/${instrumentoId}`;
+    const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        },
+        mode: "cors",
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch instrumento');
+    }
+    return await response.json();
+};

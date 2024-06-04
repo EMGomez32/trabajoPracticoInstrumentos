@@ -1,14 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row, Badge } from "antd";
+import { Card, Col, Row, Badge, Button } from "antd";
 import {
   Instrumentos,
   getInstrumentos,
-} from "../../service/ServiceInstrumentos"; // Asegúrate de que esta ruta sea correcta
+} from "../../service/ServiceInstrumentos";
+import DetalleModal from "../modal/DetalleModal";
 
 const { Meta } = Card;
 
 const InstrumentosCard: React.FC = () => {
   const [instrumentos, setInstrumentos] = useState<Instrumentos[]>([]);
+  const [selectedInstrumentoId, setSelectedInstrumentoId] = useState(null);
+
+  const showModal = (id) => {
+    setSelectedInstrumentoId(id);
+  };
+
+  const handleOk = () => {
+    setSelectedInstrumentoId(null);
+  };
+
+  const handleCancel = () => {
+    setSelectedInstrumentoId(null);
+  };
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchInstrumentos = async () => {
@@ -42,12 +62,25 @@ const InstrumentosCard: React.FC = () => {
                       style={{ backgroundColor: "#52c41a" }}
                     />
                   ) : (
-                    <p style={{ color: "#FFA500" }}>
-                      Costo de envío interior de Argentina: $
-                      {instrumento.costoEnvio}
-                    </p>
+                    <Badge
+                      count={'Costo de envío interior de Argentina: $' + instrumento.costoEnvio}
+                      style={{ backgroundColor: "#FFA500" }}
+                    />
                   )}
                   <p>Cantidad Vendida: {instrumento.cantidadVendida}</p>
+                </Col>
+                <Col>
+                  <Button type="primary" onClick={() => showModal(instrumento.id)}>
+                    Detalle
+                  </Button>
+                  {selectedInstrumentoId && selectedInstrumentoId === instrumento.id && (
+                    <DetalleModal
+                      isVisible={selectedInstrumentoId === instrumento.id}
+                      handleOk={handleOk}
+                      handleCancel={handleCancel}
+                      instrumentoId={selectedInstrumentoId}
+                    />
+                  )}
                 </Col>
               </Row>
             </Card>
