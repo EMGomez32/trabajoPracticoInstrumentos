@@ -53,6 +53,11 @@ const TablaGrilla: React.FC<Props> = ({ datos }) => {
       key: "descripcion",
     },
     {
+      title: "Categoria",
+      dataIndex: ['categoria', 'denominacion'], // muestra el nombre de la categoría
+      key: "categoria",
+    },
+    {
         title: 'Acción',
         key: 'action',
         render: () => (

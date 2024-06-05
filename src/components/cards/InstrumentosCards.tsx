@@ -26,10 +26,6 @@ const InstrumentosCard: React.FC = () => {
 
 
 
-
-
-
-
   useEffect(() => {
     const fetchInstrumentos = async () => {
       const data = await getInstrumentos();
@@ -52,6 +48,7 @@ const InstrumentosCard: React.FC = () => {
                     src={`./img/${instrumento.imagen}`}
                     style={{ width: "100%" }}
                   />
+                  
                 </Col>
                 <Col span={18} style={{ marginLeft: "20px", fontSize: "18px" }}>
                   <Meta title={instrumento.instrumento} />

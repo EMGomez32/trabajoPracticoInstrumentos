@@ -1,4 +1,4 @@
-import React from 'react'
+
 import InstrumentosCard from '../components/cards/InstrumentosCards'
 
 export default function Instrumentos() {
