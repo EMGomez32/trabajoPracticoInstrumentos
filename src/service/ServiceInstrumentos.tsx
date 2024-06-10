@@ -1,21 +1,9 @@
-import {Categoria} from "../service/ServiceCategoria";
-export interface Instrumentos{
-    id?: number;
-    instrumento: string;
-    marca: string;
-    modelo: string;
-    imagen: string;
-    precio: number;
-    costoEnvio: string;
-    cantidadVendida: number;
-    descripcion: string;
-    categoria: Categoria;
-    eliminado?: boolean;
-}
+
+import  Instrumentos  from "../entidades/Instrumento";
 
 
-export const getInstrumentos = async (): Promise<Instrumentos[]> => {
-    const endpoint = "http://localhost:8080/instrumentos/mostrarLista";
+export async function getInstrumentos () {
+    const endpoint = "http://localhost:8080/instrumentos/mostrarTodo";
     const response = await fetch(endpoint, {
         method: "GET",
         headers: {
@@ -102,3 +90,60 @@ export const cargarInstrumentos = async (formData: FormData): Promise<Instrument
   
     return await response.json();
   };
+
+
+  export async function getInstrumentoXIdFetch(id: number) {
+    const urlServer = "http://localhost:8080/instrumentos/mostrar/" + id;
+    const response = await fetch(urlServer, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      mode: "cors",
+    });
+    return (await response.json()) as Instrumentos;
+  }
+  export async function saveInstrumento(instrumento?: Instrumentos) {
+    let urlServer = "http://localhost:8080/instrumentos/crearInstrumentos";
+    let method: string = "POST";
+    if (
+       instrumento && instrumento.id > 0) {
+       urlServer =
+         "http://localhost:8080/instrumentos/actualizar/" + instrumento.id;
+       method = "PUT";
+     }
+    await fetch(urlServer, {
+      method: method,
+      body: JSON.stringify(instrumento),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  export async function getInstrumentoJSONFetch(): Promise<Instrumentos[]> {
+    const urlServer = "http://localhost:8080/Instrumento/traer-lista";
+  
+    try {
+      const response = await fetch(urlServer, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        mode: "cors",
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch instrumentos:', error);
+      throw error;
+    }
+  }
